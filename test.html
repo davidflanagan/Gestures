@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+<head>
+<style>
+.box {
+  position: absolute;
+  width: 300px;
+  height: 200px;
+  border: solid black 1px;
+  padding: 30px;
+  font: bold 24pt sans-serif;
+}
+
+#hello {
+  top: 100px;
+  left: 50px;
+}
+
+#goodbye {
+  top: 500px;
+  left: 50px;
+}
+</style>
+<script src="gestures.js"></script>
+</head>
+<body>
+Use 2-finger gestures to transform the boxes
+<div id="hello" class="box">
+  Hello World!<br/>
+  <button onclick="this.parentNode.style.MozTransform='';hscale=1;hrotate=0;htranslateX=0;htranslateY=0;">Reset</button>
+</div>
+<div id="goodbye" class="box">
+  Goodbye<br/>
+  <button onclick="this.parentNode.style.MozTransform='';gscale=1;grotate=0;gtranslateX=0;gtranslateY=0;">Reset</button>
+</div>
+<script>
+var hello = document.getElementById("hello");
+var goodbye = document.getElementById("goodbye");
+var hscale = 1, hrotate = 0, htranslateX = 0, htranslateY = 0;
+var gscale = 1, grotate = 0, gtranslateX = 0, gtranslateY = 0;
+
+Gestures.detect("transform", hello);
+Gestures.detect("transform", goodbye);
+
+hello.addEventListener("transformgesture", function(e) {
+  hscale *= e.detail.relative.scale;
+  hscale = Math.max(hscale, 0.5);
+  hscale = Math.min(hscale, 3);
+
+  hrotate += e.detail.relative.rotate;
+
+  htranslateX += e.detail.relative.translateX;
+  htranslateY += e.detail.relative.translateY;
+
+  // XXX: note that MozTranform is gecko-specific.
+  hello.style.MozTransform = 
+    "translate(" + htranslateX + "px," + htranslateY + "px)" +
+    " scale(" + hscale + ")" +
+    " rotate(" + hrotate + "deg)"
+    ;
+});
+
+goodbye.addEventListener("transformgesture", function(e) {
+  gscale *= e.detail.relative.scale;
+  gscale = Math.max(gscale, 0.5);
+  gscale = Math.min(gscale, 3);
+
+  grotate += e.detail.relative.rotate;
+
+  gtranslateX += e.detail.relative.translateX;
+  gtranslateY += e.detail.relative.translateY;
+
+  goodbye.style.MozTransform = 
+    "translate(" + gtranslateX + "px," + gtranslateY + "px)" +
+    " scale(" + gscale + ")" +
+    " rotate(" + grotate + "deg)"
+    ;
+});
+</script>
+</body>
+</html>

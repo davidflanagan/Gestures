@@ -1,0 +1,12 @@
+This module defines an extensible multi-touch gesture event framework
+and includes built-in support for two-finger transform (scale, rotate, 
+translate) gestures such as pinch-to-zoom and twist-to-rotate.
+
+This module was written for use in https://github.com/andreasgal/gaia,
+but I'm also releasing it here because it might be of more general
+utility.
+
+The test.html file in this repo currently uses style.MozTransform
+attribute, so it only works in Gecko-based browsers. It has been
+tested in Firefox nightly for Android and in the B2G browser, but I
+suppose it ought to work in other browsers if you change the prefix.
