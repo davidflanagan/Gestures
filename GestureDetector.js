@@ -4,8 +4,6 @@
 Start by handling touch events.
 Then try to add non-touch compatability with mouse events and MozMagnifyGesture
 
-XXX: write a webpage to test it and try it on Android and on B2G.
-
 Gesture events:
 
    tap          // or can I use click?
@@ -28,8 +26,6 @@ Another question: do I want to try to do any kind of CSS selector-based
  descendants that match the selector? Also, what element are the gesture
  events dispatched on?  Currently the same one that we register the 
  handlers on, even if the gesture itself is occurring on descendant elements. 
-
-Based on a state machine. Each state has its own set of event handler functions.
 
 */
 
