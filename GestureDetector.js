@@ -1,4 +1,4 @@
-// gestureEvents.js: generate events for one and two finger gestures
+// GestureDetector.js: generate events for one and two finger gestures
 
 /*
 Start by handling touch events.
