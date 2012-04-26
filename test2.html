@@ -1,0 +1,116 @@
+<html>
+<head>
+<title>Gesture Test</title>
+<script src="GestureDetector.js"></script>
+</head>
+<body>
+<div id="box" style="
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    width:300px;
+    height:300px;
+    border: solid black 1px;
+">
+Gesture!
+</div>
+
+<script>
+var box = document.getElementById('box');
+new GestureDetector(box).startDetecting();
+var x = 50;
+var y = 50;
+var boxscale = 1;
+var boxrotation = 0;
+
+function positionBox() {
+  box.style.left = x + 'px';
+  box.style.top = y + 'px';
+  box.style.MozTransform =
+    "scale(" + boxscale + ") rotate(" + boxrotation + "deg)";
+}
+
+// After any transition completes, reset the MozTransition property
+box.addEventListener('transitionend', function(e) {
+  box.style.MozTransition = "";
+});
+
+box.addEventListener('tap', function(e) {
+  box.innerHTML = 'tap (' + e.detail.screenX + ', ' + e.detail.screenY + ')';
+});
+
+box.addEventListener('dbltap', function(e) {
+  box.innerHTML = 'dbltap (' + e.detail.screenX + ', ' + e.detail.screenY + ')';
+});
+
+box.addEventListener('holdstart', function(e) {
+  box.style.borderColor = 'red';
+});
+
+box.addEventListener('holdmove', function(e) {
+  x += e.detail.relative.dx;
+  y += e.detail.relative.dy;
+  positionBox();
+})
+
+box.addEventListener('holdend', function(e) {
+  box.style.borderColor = 'black';
+  box.innerHTML = 'moved: ' + e.detail.dx + ', ' + e.detail.dy;
+});
+
+box.addEventListener('pan', function(e) {
+  // Same function as holdmove
+  x += e.detail.relative.dx;
+  y += e.detail.relative.dy;
+  positionBox();
+});
+
+const FRICTION = 0.025;           // pixels/ms/ms
+const DECEL = ' cubic-bezier(.2,.4,.5,1) '
+
+box.addEventListener('swipe', function(e) {
+  // How far will the box continue to travel based on the swipe velocity?
+  var data = e.detail;
+
+  // Physics:
+  // An object moving with a velocity v against a frictional
+  // deceleration a will travel a distance of 0.5*v*v/a before
+  // coming to rest (I think).
+  //
+  // If the user's gesture plus the distance due to the gesture velocity
+  // is more than the unlock threshold times screen height,
+  // unlock the phone. Otherwise move the lockscreen back down again.
+  //
+  var dx = 0.5 * data.vx * Math.abs(data.vx) / FRICTION;
+  var dy = 0.5 * data.vy * Math.abs(data.vy) / FRICTION;
+
+  var velocity = Math.sqrt(data.vx*data.vx + data.vy*data.vy);
+  var dt = velocity/FRICTION; // how long the box travels for
+
+  box.style.MozTransition =
+    "left " + dt + "ms" + DECEL + "," +
+    "top " + dt + "ms" + DECEL;
+
+  x += dx;
+  y += dy;
+  positionBox();
+
+  box.innerHTML = data.direction + "<br>" +
+    data.angle + "<br>" +
+    data.vx + ", " + data.vy + "<br>" +
+    dx + ", " + dy + ", " + dt;
+
+});
+
+box.addEventListener('transform', function(e) {
+  box.innerHTML = "scale: " + e.detail.absolute.scale + "<br>" +
+    "rotate: " + e.detail.absolute.rotate;
+  boxscale *= e.detail.relative.scale;
+  boxrotation += e.detail.relative.rotate;
+  console.log("new", boxscale, boxrotation);
+  positionBox();
+  console.log(box.style.MozTransform);
+});
+</script>
+</body>
+</html>

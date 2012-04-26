@@ -1,12 +1,20 @@
-This module defines an extensible multi-touch gesture event framework
-and includes built-in support for two-finger transform (scale, rotate, 
-translate) gestures such as pinch-to-zoom and twist-to-rotate.
+This repo contains two different work-in-progress attempts at touch
+gesture support libraries.
 
-This module was written for use in https://github.com/andreasgal/gaia,
-but I'm also releasing it here because it might be of more general
+The first is gestures.js (and test.html). It supports two-finger
+gestures pinch and twist gestures and is extensible, but the problem
+is that it doesn't interoperate well with one finger gestures.
+
+The second is GestureDetector.js (and test2.html) which is
+non-extensible but supports a fairly full set of one and two-finger
+gestures by default.
+
+Both were written for use in https://github.com/andreasgal/gaia, but
+I'm also releasing them here because they might be of more general
 utility.
 
-The test.html file in this repo currently uses style.MozTransform
-attribute, so it only works in Gecko-based browsers. It has been
-tested in Firefox nightly for Android and in the B2G browser, but I
-suppose it ought to work in other browsers if you change the prefix.
+Neither one is ready for use in production code yet.
+
+The test.html and test2.html files in this repo currently use the
+style.MozTransform attribute, so they only work in Gecko-based
+browsers.
