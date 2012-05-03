@@ -241,12 +241,12 @@ var SyntheticGestures = (function() {
         y = box.top + box.height/2;
     }
 
-    touch(target, 50, [x, x], [y, y], function() {
+    touch(target, 25, [x, x], [y, y], function() {
       // When the first tap is done, start a timer for interval ms.
       setTimeout(function() {
         // After interval ms, send the second tap
-        touch(target, 50, [x, x], [y, y], then);
-      }, interval);
+        touch(target, 25, [x, x], [y, y], then);
+      }, interval||50);
     });
   }
 
@@ -455,12 +455,12 @@ var SyntheticGestures = (function() {
         y = box.top + box.height/2;
     }
 
-    drag(target.ownerDocument, 50, [x, x], [y, y], function() {
+    drag(target.ownerDocument, 25, [x, x], [y, y], function() {
       // When the first tap is done, start a timer for interval ms.
       setTimeout(function() {
         // After interval ms, send the second tap with the click count set to 2.
-        drag(target.ownerDocument, 50, [x, x], [y, y], then, 2);
-      }, interval);
+        drag(target.ownerDocument, 25, [x, x], [y, y], then, 2);
+      }, interval||50);
     });
   }
 
